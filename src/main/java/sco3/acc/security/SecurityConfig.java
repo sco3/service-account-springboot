@@ -1,6 +1,6 @@
 package sco3.acc.security;
 
-import static sco3.acc.common.Constants.NON_SECURE_MATCHERS;
+import static sco3.acc.common.AccConstants.NON_SECURE_MATCHERS;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
