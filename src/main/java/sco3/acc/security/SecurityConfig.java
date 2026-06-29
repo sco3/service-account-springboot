@@ -1,7 +1,6 @@
 package sco3.acc.security;
 
-import static sco3.acc.common.Constants.API_DOCS;
-import static sco3.acc.common.Constants.SWAGGER_UI;
+import static sco3.acc.common.Constants.NON_SECURE_MATCHERS;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,21 +19,19 @@ public class SecurityConfig {
 			HttpSecurity http //
 	) throws Exception {
 
-		String[] matchers = { API_DOCS, SWAGGER_UI };
-
 		http.csrf(csrf -> csrf.disable()) //
 				.sessionManagement(sm -> sm.sessionCreationPolicy( //
 						SessionCreationPolicy.STATELESS //
 				)) //
-				.authorizeHttpRequests(auth -> auth.requestMatchers(matchers)//
+				.authorizeHttpRequests(auth -> auth.requestMatchers(NON_SECURE_MATCHERS)//
 						.permitAll() //
 						.anyRequest() //
 						.authenticated() //
 				) //
 				.oauth2ResourceServer(oauth -> oauth.jwt(jwt -> {
 				})) //
-				.formLogin(form -> form.disable()) // IMPORTANT
-				.httpBasic(basic -> basic.disable()); // IMPORTANT
+				.formLogin(form -> form.disable()) //
+				.httpBasic(basic -> basic.disable()); //
 
 		return http.build();
 	}
