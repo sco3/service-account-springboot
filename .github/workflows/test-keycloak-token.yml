@@ -97,21 +97,9 @@ jobs:
           cat app.log
           exit 1
 
-      - name: Test get-users returns 400 without params
+      - name: Test get-users returns 400 without params with java
         run: |
-          RESPONSE=$(bash ./get-users-no-param.sh 2>/dev/null)
-          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-
-          echo "HTTP status: $HTTP_CODE"
-          echo "Response body: $BODY"
-
-          if [ "$HTTP_CODE" -ne 400 ]; then
-            echo "Expected HTTP 400, got $HTTP_CODE"
-            exit 1
-          fi
-          echo "Correctly returned 400"
-        working-directory: integraion
+          ./gradlew test --tests "sco3.acc.service.IntegrationTestUserService" --info --stacktrace
 
       - name: Test health/me endpoint
         run: |

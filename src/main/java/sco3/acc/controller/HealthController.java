@@ -1,6 +1,6 @@
 package sco3.acc.controller;
 
-import static sco3.acc.common.Constants.API_V1;
+import static sco3.acc.common.AccConstants.API_V1;
 
 import java.util.List;
 import java.util.Map;
