@@ -61,12 +61,12 @@ public class IntegrationTestUserService {
 
 		String endpoint = SERVER_URL + AccConstants.API_V1 + "users";
 
-		// Since RestTemplate throws an exception for 4xx errors, we use assertThrows
-		HttpClientErrorException exception = assertThrows(HttpClientErrorException.class, () -> {
-			restTemplate.exchange(endpoint, HttpMethod.GET, entity, Map.class);
-		});
+		HttpClientErrorException exception = assertThrows(HttpClientErrorException.class, //
+				() -> {
+					restTemplate.exchange(endpoint, HttpMethod.GET, entity, Map.class);
+				} //
+		);
 
-		// Now verify the status code of the exception
-		// assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 }
