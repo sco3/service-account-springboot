@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    Optional<User> findByUserId(long userId);
+	Optional<User> findByUserId(long userId);
 
-    List<User> findByServiceAccount(String serviceAccount);
+	List<User> findByServiceAccount(List<String> serviceAccount);
 
-    List<User> findAll();
+	List<User> findAll();
 }
