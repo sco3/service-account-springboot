@@ -44,7 +44,7 @@ jobs:
       - name: Verify token claims
         run: |
           TOKEN=$(bash integraion/get-token.sh 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
-          PAYLOAD=$(echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null || echo "$TOKEN" | cut -d. -f2 | python3 -c "import sys,base64,json; print(json.dumps(json.loads(base64.urlsafe_b64decode(sys.stdin.read().rstrip('='))),indent=2))")
+          PAYLOAD=$(echo "$TOKEN" | cut -d. -f2 | python3 -c "import sys,base64,json; s=sys.stdin.read().strip().rstrip('='); s+='='*(4-len(s)%4); print(json.dumps(json.loads(base64.urlsafe_b64decode(s)),indent=2))")
 
           echo "Token payload:"
           echo "$PAYLOAD" | python3 -m json.tool
