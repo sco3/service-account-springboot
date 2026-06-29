@@ -15,6 +15,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
 
 import sco3.acc.controller.UserController;
 import sco3.acc.model.User;
@@ -52,7 +53,7 @@ class UserControllerTest {
 	void shouldNotReturnUsers() throws Exception {
 
 		Mockito.when(service.findByServiceAccounts(null)) //
-				.thenThrow(BadRequestException.class);
+				.thenThrow(ResponseStatusException.class);
 
 		mockMvc.perform(get("/api/v1/users")) //
 				.andExpect(status().isBadRequest());
