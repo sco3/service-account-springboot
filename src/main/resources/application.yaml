@@ -7,3 +7,9 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8081/realms/service-accounts
+
+  datasource:
+    url: jdbc:clickhouse:http://localhost:8123/service_accounts
+    username: admin
+    password: admin123
+    driver-class-name: com.clickhouse.jdbc.ClickHouseDriver		  

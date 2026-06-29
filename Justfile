@@ -10,6 +10,10 @@ list:
 run:
     ./gradlew bootRun
 
+# debug Spring Boot app
+debug:
+    ./gradlew bootRun --args='--debug'
+
 # clean build
 build:
     ./gradlew clean build
