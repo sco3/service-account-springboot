@@ -17,5 +17,21 @@ services:
         soft: 262144
         hard: 262144
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2
+    container_name: service-account-keycloak
+    command: 
+      - start-dev
+      - --import-realm
+    ports:
+      - "8081:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+      - ./docker/keycloak/realm.json:/opt/keycloak/data/import/realm.json
+
 volumes:
   clickhouse-data:
+  keycloak-data:
