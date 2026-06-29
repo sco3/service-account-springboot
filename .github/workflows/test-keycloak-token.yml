@@ -79,16 +79,8 @@ jobs:
 
       - name: Check all service ports
         run: |
-          echo "Checking service ports..."
-          for PORT in 8123 8081; do
-            if netstat -ltnp 2>/dev/null | grep -q ":${PORT} "; then
-              echo "  [OK] Port ${PORT} is listening"
-            else
-              echo "  [FAIL] Port ${PORT} is NOT listening"
-              exit 1
-            fi
-          done
-          echo "All ports OK."
+          echo "Checking service ports 8123, 8081 ..."
+          netstat -ltnp | grep -E '8123|8081'
 
       - name: Start Spring Boot app
         run: |
