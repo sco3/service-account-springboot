@@ -6,6 +6,35 @@ default:
 list:
     @just --list
 
+# check if required services are running
+check:
+    #!/usr/bin/env bash
+    set -e
+    FAIL=0
+    echo "Checking required services..."
+    for PORT in 8123 8081; do
+        if netstat -ltnp 2>/dev/null | grep -q ":${PORT} "; then
+            echo "  [OK] Port ${PORT} is listening"
+        else
+            echo "  [FAIL] Port ${PORT} is NOT listening"
+            FAIL=1
+        fi
+    done
+    echo "Checking docker containers..."
+    for CNT in service-account-clickhouse service-account-keycloak; do
+        if docker ps --filter "name=$CNT" --filter "status=running" --format "{{ '{{' }}.Names{{ '}}' }}" 2>/dev/null | grep -q "$CNT"; then
+            echo "  [OK] ${CNT} is running"
+        else
+            echo "  [FAIL] ${CNT} is not running"
+            FAIL=1
+        fi
+    done
+    if [ $FAIL -eq 1 ]; then
+        echo "Some services are down. Run 'just up' to start them."
+        exit 1
+    fi
+    echo "All services OK."
+
 # run Spring Boot app
 run:
     ./gradlew bootRun
@@ -18,9 +47,13 @@ debug:
 build:
     ./gradlew clean build
     
-    
+# build docker image
 docker:
     ./gradlew bootJar && ./gradlew bootBuildImage
+
+# run app with clickhouse and keycloak
+compose:
+    docker compose -f docker-compose.yml -f docker-compose.app.yml up --build
 
 # run tests
 test:

@@ -18,8 +18,22 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
 
-      - name: Start Keycloak
-        run: docker compose up -d keycloak
+      - name: Start Keycloak and ClickHouse
+        run: docker compose up -d keycloak clickhouse
+
+      - name: Wait for ClickHouse
+        run: |
+          echo "Waiting for ClickHouse..."
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:8123/ping > /dev/null 2>&1; then
+              echo "ClickHouse ready after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "ClickHouse failed to start"
+          docker compose logs clickhouse
+          exit 1
 
       - name: Wait for Keycloak
         run: |
@@ -62,6 +76,19 @@ jobs:
           assert d['email_verified'] == True, 'Email should be verified'
           print('All claims verified')
           "
+
+      - name: Check all service ports
+        run: |
+          echo "Checking service ports..."
+          for PORT in 8123 8081; do
+            if netstat -ltnp 2>/dev/null | grep -q ":${PORT} "; then
+              echo "  [OK] Port ${PORT} is listening"
+            else
+              echo "  [FAIL] Port ${PORT} is NOT listening"
+              exit 1
+            fi
+          done
+          echo "All ports OK."
 
       - name: Start Spring Boot app
         run: |
