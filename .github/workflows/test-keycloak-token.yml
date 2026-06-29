@@ -87,7 +87,7 @@ jobs:
           echo "$RESPONSE" | python3 -c "
           import sys, json
           d = json.load(sys.stdin)
-          assert 'sub' in d, 'Missing subject claim'
+          assert 'subject' in d, 'Missing subject claim'
           assert d.get('roles') == ['admin'] or d.get('realm_access', {}).get('roles') == ['admin'], 'Expected admin role'
           print('Health/me endpoint verified')
           "
