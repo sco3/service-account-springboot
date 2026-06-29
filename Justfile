@@ -1,10 +1,10 @@
 # default target
 default:
-    @just --list
+    @just --list --color never
 
 # show available commands
 list:
-    @just --list
+    @just --list --color never 
 
 # check if required services are running
 check:
@@ -46,6 +46,10 @@ debug:
 # clean build
 build:
     ./gradlew clean build
+
+# run clickhouse and keycloak images
+infra:
+    docker compose -f docker-compose.infra.yml up -d
     
 # build docker image
 docker:
@@ -53,7 +57,7 @@ docker:
 
 # run app with clickhouse and keycloak
 compose:
-    docker compose -f docker-compose.yml -f docker-compose.app.yml up --build
+    docker compose up -d
 
 # run tests
 test:
