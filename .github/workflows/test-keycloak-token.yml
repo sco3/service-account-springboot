@@ -18,8 +18,22 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
 
-      - name: Start Keycloak
-        run: docker compose up -d keycloak
+      - name: Start Keycloak and ClickHouse
+        run: docker compose -f docker-compose.infra.yml up -d 
+
+      - name: Wait for ClickHouse
+        run: |
+          echo "Waiting for ClickHouse..."
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:8123/ping > /dev/null 2>&1; then
+              echo "ClickHouse ready after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "ClickHouse failed to start"
+          docker compose logs clickhouse
+          exit 1
 
       - name: Wait for Keycloak
         run: |
@@ -63,6 +77,11 @@ jobs:
           print('All claims verified')
           "
 
+      - name: Check all service ports
+        run: |
+          echo "Checking service ports 8123, 8081 ..."
+          netstat -ltnp | grep -E '8123|8081'
+
       - name: Start Spring Boot app
         run: |
           nohup ./gradlew bootRun > app.log 2>&1 &
@@ -77,6 +96,22 @@ jobs:
           echo "App failed to start"
           cat app.log
           exit 1
+
+      - name: Test get-users returns 400 without params
+        run: |
+          RESPONSE=$(bash ./get-users-no-param.sh 2>/dev/null)
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          echo "HTTP status: $HTTP_CODE"
+          echo "Response body: $BODY"
+
+          if [ "$HTTP_CODE" -ne 400 ]; then
+            echo "Expected HTTP 400, got $HTTP_CODE"
+            exit 1
+          fi
+          echo "Correctly returned 400"
+        working-directory: integraion
 
       - name: Test health/me endpoint
         run: |

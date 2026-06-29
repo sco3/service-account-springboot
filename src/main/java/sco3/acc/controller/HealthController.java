@@ -1,4 +1,4 @@
-package sco3.acc.controllers;
+package sco3.acc.controller;
 
 import static sco3.acc.common.Constants.API_V1;
 

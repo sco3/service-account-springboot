@@ -1,0 +1,15 @@
+services:
+  app:
+    image: acc:0.0.1-SNAPSHOT
+    container_name: service-account-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - clickhouse
+      - keycloak
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:clickhouse://clickhouse:8123/service_accounts
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/service-accounts
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY_OAUTH2: TRACE
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: DEBUG
