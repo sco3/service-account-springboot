@@ -17,6 +17,10 @@ debug:
 # clean build
 build:
     ./gradlew clean build
+    
+    
+docker:
+    ./gradlew bootJar && ./gradlew bootBuildImage
 
 # run tests
 test:
