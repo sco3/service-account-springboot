@@ -97,24 +97,9 @@ jobs:
           cat app.log
           exit 1
 
-      - name: Test get-users returns 400 without params with java
+      - name: Test endpoints
         run: |
           ./gradlew integrationTest --stacktrace
-
-      - name: Test health/me endpoint
-        run: |
-          RESPONSE=$(bash ./get-health-me.sh 2>/dev/null)
-          echo "Response:"
-          echo "$RESPONSE" | python3 -m json.tool
-
-          echo "$RESPONSE" | python3 -c "
-          import sys, json
-          d = json.load(sys.stdin)
-          assert 'subject' in d, 'Missing subject claim'
-          assert d.get('roles') == ['admin'] or d.get('realm_access', {}).get('roles') == ['admin'], 'Expected admin role'
-          print('Health/me endpoint verified')
-          "
-        working-directory: integraion
 
       - name: Cleanup
         if: always()

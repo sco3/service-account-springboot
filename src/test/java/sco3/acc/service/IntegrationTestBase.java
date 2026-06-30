@@ -1,6 +1,8 @@
 package sco3.acc.service;
 
+import static java.lang.System.out;
 import static org.assertj.core.api.Assertions.assertThat;
+import static sco3.acc.common.AccConstants.INTEGRATION;
 
 import java.util.Map;
 
@@ -16,17 +18,18 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-@Tag("integration")
+@Tag(INTEGRATION)
 public class IntegrationTestBase {
 	public static final String SERVER_URL = "http://localhost:8080";
 	public static final String KEYCLOAK_URL = "http://localhost:8081";
-	
+
 	protected final RestTemplate restTemplate = new RestTemplate();
 	protected String accessToken;
 
 	@BeforeEach
 	void authenticateWithKeycloak() {
-		String tokenUrl = KEYCLOAK_URL + "/realms/service-accounts/protocol/openid-connect/token";
+		String tokenUrl = KEYCLOAK_URL
+				+ "/realms/service-accounts/protocol/openid-connect/token";
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -38,16 +41,17 @@ public class IntegrationTestBase {
 		body.add("password", "admin");
 		body.add("grant_type", "password");
 
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
+		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body,
+				headers);
 
 		@SuppressWarnings("rawtypes")
-		ResponseEntity<Map> response = restTemplate.exchange(tokenUrl, HttpMethod.POST, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(tokenUrl,
+				HttpMethod.POST, request, Map.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		this.accessToken = (String) response.getBody().get("access_token");
-		
-		System.out.println("Token obtained");
-	}
 
+		out.println("Token: " + accessToken.substring(0, 4) + " ...");
+	}
 
 }

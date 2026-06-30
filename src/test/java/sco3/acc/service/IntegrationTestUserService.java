@@ -2,6 +2,7 @@ package sco3.acc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static sco3.acc.common.AccConstants.INTEGRATION;
 
 import java.util.Map;
 
@@ -14,9 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 import sco3.acc.common.AccConstants;
-@Tag("integration")
-public class IntegrationTestUserService extends IntegrationTestBase{
 
+@Tag(INTEGRATION)
+public class IntegrationTestUserService extends IntegrationTestBase {
 
 	@Test
 	void testGetUser() {
@@ -26,12 +27,15 @@ public class IntegrationTestUserService extends IntegrationTestBase{
 
 		String endpoint = SERVER_URL + AccConstants.API_V1 + "users";
 
-		HttpClientErrorException exception = assertThrows(HttpClientErrorException.class, //
+		HttpClientErrorException exception = assertThrows(
+				HttpClientErrorException.class, //
 				() -> {
-					restTemplate.exchange(endpoint, HttpMethod.GET, entity, Map.class);
+					restTemplate.exchange(endpoint, HttpMethod.GET, entity,
+							Map.class);
 				} //
 		);
 
 		assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		
 	}
 }

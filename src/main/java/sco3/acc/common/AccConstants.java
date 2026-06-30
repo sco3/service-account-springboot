@@ -13,4 +13,10 @@ public interface AccConstants {
 			ACTUATOR //
 	};
 
+	public static final String INTEGRATION = "integration";
+	public static final String API_USERS_ENDPOINT = API_V1 + "users";
+	public static final String API_HEALTH_PATH = API_V1 + "health";
+	public static final String HEALTH_ME = "/me";
+	public static final String API_HEALTH_ME_ENDPOINT = API_HEALTH_PATH + HEALTH_ME;
+
 }
