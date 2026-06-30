@@ -2,6 +2,7 @@ package sco3.acc.service;
 
 import static java.lang.System.out;
 import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 import static sco3.acc.common.AccConstants.API_HEALTH_ME_ENDPOINT;
 import static sco3.acc.common.AccConstants.INTEGRATION;

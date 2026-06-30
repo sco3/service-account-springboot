@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test-keycloak-token:
+  integration-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
