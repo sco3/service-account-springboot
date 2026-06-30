@@ -50,7 +50,7 @@ test {
     finalizedBy jacocoTestReport 
 }
 
-task integrationTest(type: Test) {
+task ci(type: Test) {
     testClassesDirs = test.testClassesDirs
     classpath = test.classpath
     useJUnitPlatform {

@@ -3,6 +3,7 @@ package sco3.acc.repository;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -19,7 +20,8 @@ public class JdbcUserRepository implements UserRepository {
 		this.jdbc = jdbc;
 	}
 
-	private static User mapRow(ResultSet rs, int rowNum) throws java.sql.SQLException {
+	private static User mapRow(ResultSet rs, int rowNum)
+			throws java.sql.SQLException {
 		return new User( //
 				rs.getLong("user_id"), //
 				rs.getString("service_account"), //
@@ -44,7 +46,7 @@ public class JdbcUserRepository implements UserRepository {
 	}
 
 	@Override
-	public List<User> findByServiceAccount(List<String> serviceAccount) {
+	public List<User> findByServiceAccount(Set<String> serviceAccount) {
 
 		String sql = """
 				SELECT user_id, service_account, created_at

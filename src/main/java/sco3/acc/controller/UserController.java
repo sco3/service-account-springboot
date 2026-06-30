@@ -5,6 +5,7 @@ import static sco3.acc.common.CollectionChecker.hasItems;
 import static sco3.acc.common.CollectionChecker.isEmpty;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -39,10 +40,10 @@ public class UserController {
 
 	@GetMapping("/users")
 	public List<UserDto> findUsers( //
-			@RequestParam(required = false) List<Long> userIds, //
-			@RequestParam(required = false) List<String> serviceAccount //
+			@RequestParam(required = false) HashSet<Long> userId, //
+			@RequestParam(required = false) HashSet<String> serviceAccount //
 	) throws ResponseStatusException {
-		if (isEmpty(userIds, serviceAccount)) {
+		if (isEmpty(userId, serviceAccount)) {
 			throw new ResponseStatusException( //
 					HttpStatus.BAD_REQUEST,
 					"Either 'userId' or 'serviceAccount' must be provided." //

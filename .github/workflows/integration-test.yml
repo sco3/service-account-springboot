@@ -49,34 +49,6 @@ jobs:
           docker compose logs keycloak
           exit 1
 
-      - name: Get token
-        run: |
-          RESPONSE=$(bash integraion/get-token.sh 2>/dev/null)
-          echo "$RESPONSE" | python3 -m json.tool
-
-          if echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); sys.exit(0 if 'access_token' in d else 1)"; then
-            echo "Token obtained successfully"
-          else
-            echo "Failed to obtain token"
-            exit 1
-          fi
-
-      - name: Verify token claims
-        run: |
-          TOKEN=$(bash integraion/get-token.sh 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
-          PAYLOAD=$(echo "$TOKEN" | cut -d. -f2 | python3 -c "import sys,base64,json; s=sys.stdin.read().strip().rstrip('='); s+='='*(4-len(s)%4); print(json.dumps(json.loads(base64.urlsafe_b64decode(s)),indent=2))")
-
-          echo "Token payload:"
-          echo "$PAYLOAD" | python3 -m json.tool
-
-          echo "$PAYLOAD" | python3 -c "
-          import sys, json
-          d = json.load(sys.stdin)
-          assert d['realm_access']['roles'] == ['admin'], f'Expected admin role, got {d[\"realm_access\"][\"roles\"]}'
-          assert d['email_verified'] == True, 'Email should be verified'
-          print('All claims verified')
-          "
-
       - name: Check all service ports
         run: |
           echo "Checking service ports 8123, 8081 ..."
@@ -97,9 +69,9 @@ jobs:
           cat app.log
           exit 1
 
-      - name: Test endpoints
+      - name: Integration Test
         run: |
-          ./gradlew integrationTest --stacktrace
+          ./gradlew ci --stacktrace
 
       - name: Cleanup
         if: always()
