@@ -2,6 +2,7 @@ package sco3.acc.service;
 
 import static java.lang.System.out;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 import static sco3.acc.common.AccConstants.API_HEALTH_ME_ENDPOINT;
 import static sco3.acc.common.AccConstants.INTEGRATION;
 
@@ -14,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 
 @Tag(INTEGRATION)
 
@@ -33,7 +33,8 @@ public class IntegrationTestHealh extends IntegrationTestBase {
 		assertThat(response.getStatusCode().equals(HttpStatus.OK));
 		var body = response.getBody();
 		out.println(body);
-		assertThat(body).hasSizeGreaterThanOrEqualTo(0);
+		assertThat (body).isNotNull();
+		
 		assertThat(body.get("roles")).asInstanceOf(LIST).contains("admin");
 
 	}
