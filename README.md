@@ -98,6 +98,8 @@ If you encounter `401 Unauthorized` errors with the log `The iss claim is not va
 
 ## Quick Start
 
+The project uses `just` command cli - an alternative to `make`
+
 ```bash
 # Start infrastructure (Keycloak + ClickHouse)
 just infra
