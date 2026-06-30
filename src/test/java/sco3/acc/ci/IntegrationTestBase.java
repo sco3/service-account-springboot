@@ -1,4 +1,4 @@
-package sco3.acc.service;
+package sco3.acc.ci;
 
 import static java.lang.System.out;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +50,7 @@ public class IntegrationTestBase {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		this.accessToken = (String) response.getBody().get("access_token");
-
+		assertThat(this.accessToken).asString().isNotEmpty();
 		out.println("Token: " + accessToken.substring(0, 4) + " ...");
 	}
 

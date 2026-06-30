@@ -87,3 +87,6 @@ logs-keycloak:
 # run only clickhouse logs
 logs-clickhouse:
     docker compose logs -f clickhouse
+# run integration tests    
+ci:
+    ./gradlew ci --stacktrace
