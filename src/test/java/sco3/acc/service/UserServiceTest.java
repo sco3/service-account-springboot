@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -39,7 +40,7 @@ class UserControllerTest {
 	void shouldReturnUsers() throws Exception {
 		var user = new User(1L, MONITORING_AGENT, LocalDateTime.now());
 
-		Mockito.when(service.findByServiceAccounts(List.of(MONITORING_AGENT))) //
+		Mockito.when(service.findByServiceAccounts(Set.of(MONITORING_AGENT))) //
 				.thenReturn(List.of(user));
 
 		mockMvc.perform(get("/api/v1/users") //
