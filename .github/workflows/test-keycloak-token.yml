@@ -99,7 +99,7 @@ jobs:
 
       - name: Test get-users returns 400 without params with java
         run: |
-          ./gradlew test --tests "sco3.acc.service.IntegrationTestUserService" --info --stacktrace
+          ./gradlew integrationTest --info --stacktrace
 
       - name: Test health/me endpoint
         run: |

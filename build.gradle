@@ -43,14 +43,17 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-	exclude '**/Integration*.class'
-}
-
-
 test {
-    finalizedBy jacocoTestReport
+    useJUnitPlatform {
+        excludeTags 'integration'
+    }
+    finalizedBy jacocoTestReport 
+}
+task integrationTest(type: Test) {
+    useJUnitPlatform {
+        includeTags 'integration'
+    }
+    mustRunAfter test
 }
 
 jacocoTestReport {
