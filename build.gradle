@@ -49,11 +49,19 @@ test {
     }
     finalizedBy jacocoTestReport 
 }
+
 task integrationTest(type: Test) {
+    testClassesDirs = test.testClassesDirs
+    classpath = test.classpath
     useJUnitPlatform {
         includeTags 'integration'
     }
-    mustRunAfter test
+    
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+        displayGranularity = 1
+    }    
 }
 
 jacocoTestReport {
