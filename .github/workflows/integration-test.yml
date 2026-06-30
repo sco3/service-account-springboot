@@ -1,4 +1,4 @@
-name: Test Keycloak Token
+name: Integration Test
 
 on:
   push:
