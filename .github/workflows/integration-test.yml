@@ -19,7 +19,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Start Keycloak and ClickHouse
-        run: docker compose -f docker-compose.infra.yml up -d 
+        run: KC_HOSTNAME=localhost docker compose -f docker-compose.infra.yml up -d 
 
       - name: Wait for ClickHouse
         run: |

@@ -16,7 +16,7 @@ Keycloak is configured to force a specific hostname and port. By setting the `ho
 
 | Flag | Purpose |
 |---|---|
-| `--hostname=keycloak` | Allows services inside the Docker network to resolve the host |
+| `--hostname=${KC_HOSTNAME:-keycloak}` | Allows services inside the Docker network to resolve the host |
 | `--http-port=8081` | Standardizes the port |
 | `--hostname-strict=false` | Prevents 401 errors during development by allowing non-matching `Host` headers |
 
@@ -116,7 +116,7 @@ just compose
 
 | Command | Description |
 |---|---|
-| `just infra` | Start ClickHouse and Keycloak |
+| `just infra` | Start ClickHouse and Keycloak (KC_HOSTNAME=localhost |
 | `just run` | Run Spring Boot app locally |
 | `just debug` | Run Spring Boot app with debug mode |
 | `just build` | Clean build |
