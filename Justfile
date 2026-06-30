@@ -49,7 +49,7 @@ build:
 
 # run clickhouse and keycloak images
 infra:
-    docker compose -f docker-compose.infra.yml up -d
+    KC_HOSTNAME=localhost docker compose -f docker-compose.infra.yml up -d
     
 # build docker image
 docker:

@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import com.nimbusds.jwt.JWTParser;
+import com.nimbusds.jwt.JWTClaimsSet;
 
 @Tag(INTEGRATION)
 public class IntegrationTestBase {
@@ -51,7 +53,18 @@ public class IntegrationTestBase {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		this.accessToken = (String) response.getBody().get("access_token");
 		assertThat(this.accessToken).asString().isNotEmpty();
-		out.println("Token: " + accessToken.substring(0, 4) + " ...");
+		String iss = "";
+		try {
+			var jwt = JWTParser.parse(this.accessToken);
+			var claims = jwt.getJWTClaimsSet();
+			iss = claims.getIssuer();
+		} catch (Exception e) {
+			out.println("Token parse error: " + e.getMessage());
+
+		}
+		String head = accessToken.substring(0, 4);
+		out.println("Token: " + head + " ... Issuer: " + iss);
+
 	}
 
 }
