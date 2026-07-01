@@ -17,8 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
 import com.nimbusds.jwt.JWTParser;
-import com.nimbusds.jwt.JWTClaimsSet;
 
 @Tag(INTEGRATION)
 public class IntegrationTestBase {
