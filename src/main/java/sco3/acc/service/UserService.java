@@ -22,6 +22,10 @@ public class UserService {
 		return userRepository.findByServiceAccount(accounts);
 	}
 
+	public List<User> findByUserIds(Set<Long> ids) {
+		return userRepository.findByUserIds(ids);
+	}
+
 	public Optional<User> findById(long id) {
 		return userRepository.findByUserId(id);
 	}
